@@ -20,5 +20,16 @@ connectToDb((err) => {
 
 // routes
 app.get('/books', (req, res) => {
+    let books = [];
+
+    db.collection('books').find().sort({rating: -1})
+    .forEach(book => books.push(book))
+    .then(() => {
+        res.status(200).json(books);
+    })
+    .catch(() => {
+        res.status(500).json({error: 'Could not fetch documents'});
+    })
+    
     res.json({mssg: "sample message"});
 })
